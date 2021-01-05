@@ -6,7 +6,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		DAO dao = new DAO(); // Connection
-
+		dao.run();
 		App app = new App();
 		app.run();
 	}
@@ -35,19 +35,21 @@ class App {
 			switch (select) {
 			case 1:
 				System.out.println("로그인 및 회원가입");
-				MBD_Login log = new MBD_Login();
+				Login log = new Login();
 				log.run();
 				break;
 			case 2:
 				System.out.println("자격증");
-
 				break;
+				
 			case 3:
 				System.out.println("자료실");
 				break;
+				
 			case 4:
 				System.out.println("-----시스템 종료-----");
 				return;
+				
 			default:
 				System.out.println("다시 입력하세요!");
 
