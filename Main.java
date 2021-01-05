@@ -39,7 +39,7 @@ class App {
 				log.run();
 				break;
 			case 2:
-				System.out.println("자격증123123");
+				System.out.println("자격증");
 
 				break;
 			case 3:
