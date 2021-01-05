@@ -36,7 +36,7 @@ public class MBD_Login {
 							System.out.println("PW : ");
 							String USER_PW = sc.next();
 							if (USER_PW.equals(DB_PW)) {
-								System.out.println("로그인 성공");
+								System.out.println("로그인 성공 테스트");
 							} else if (!USER_PW.equals(DB_PW)) {
 								System.out.println("비밀번호가 틀립니다.");
 							}
