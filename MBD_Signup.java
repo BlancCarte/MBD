@@ -6,9 +6,9 @@ import java.util.regex.*;
 
 public class MBD_Signup {
 	Scanner sc = new Scanner(System.in);
-	//받은 회원정보 USER클래스에 저장하기위해 User 객체생성
+	// 받은 회원정보 USER클래스에 저장하기위해 User 객체생성
 	User user = new User();
-	//DB연결을위한 커넥션, 현재상태 객체 private으로 선언
+	// DB연결을위한 커넥션, 현재상태 객체 private으로 선언
 	private static Connection conn;
 	private static PreparedStatement pstmt;
 	String SG_ID;
@@ -20,12 +20,12 @@ public class MBD_Signup {
 	String SG_EMAIL;
 	String SG_PHONE;
 
-	//회원가입 체크 메소드
+	// 회원가입 체크 메소드
 	void signUpCheck() {
-		
+
 		while (true) {
 			System.out.println("아이디 : ");
-			SG_ID = sc.next();
+			SG_ID = sc.nextLine(); // Line()			
 			ResultSet rs = null;
 
 			try {
@@ -46,33 +46,32 @@ public class MBD_Signup {
 					while (true) {
 						// 비밀번호 패턴
 						System.out.println("비밀번호 : ");
-						sc.nextLine();
-						SG_PW = sc.nextLine();
-						String pwPattern1 = "^(?=.*\\d)(?=.*[~`!@#$%\\^&*()-])(?=.*[a-z])(?=.*[A-Z]).{9,12}$"; //대문자,소문자,숫자,특수문자 조합으로 8~12자리 패턴
+						SG_PW = sc.nextLine();						
+						String pwPattern1 = "^(?=.*\\d)(?=.*[~`!@#$%\\^&*()-])(?=.*[a-z])(?=.*[A-Z]).{8,12}$"; // 대문자,소문자,숫자,특수문자 조합으로 8~12자리 패턴																												
 						String pwPattern2 = "(.)\\1\\1\\1"; // 같은 문자 3회 반복 패턴
 
 						if (patternMatch(pwPattern1, SG_PW)) {
-							System.out.println("비밀번호는 영문(대소문자 구분), 숫자, 특수문자 조합으로 9~12자리를 입력해주세요");
+							System.out.println("비밀번호는 영문(대소문자 구분), 숫자, 특수문자 조합으로 8~12자리를 입력해주세요");							
 							continue;
 
 						}
 
 						else if (patternFind(pwPattern2, SG_PW)) {
-							System.out.println("비밀번호에 같은 문자가 3회 반복됩니다.");
+							System.out.println("비밀번호에 같은 문자가 3회 반복됩니다.");							
 							continue;
 
 						}
 
-						else if (SG_PW.contains(SG_ID)) { //비밀번호에 아이디가 포함될 때
+						else if (SG_PW.contains(SG_ID)) { // 비밀번호에 아이디가 포함될 때
 							System.out.println("아이디와 비밀번호가 중복됩니다.");
 							continue;
 						}
 
-						else if (SG_PW.contains(" ")) { //비밀번호에 공백이 포함될 때
+						else if (SG_PW.contains(" ")) { // 비밀번호에 공백이 포함될 때
 							System.out.println("비밀번호에 공백이 있습니다.");
 							continue;
 
-						} 
+						}
 						// 비밀번호패턴에 위배되지 않을 때
 						else {
 
@@ -110,9 +109,9 @@ public class MBD_Signup {
 
 							while (true) {
 								// @@@-@@@-@@@ 형태만 입력받게 패턴설정
-								System.out.println("휴대전화 번호 : ");
+								System.out.println("휴대전화 번호(-제외하고 입력해주세요) : ");
 								SG_PHONE = sc.next();
-								String Phonepattern = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$";
+								String Phonepattern = "^01(?:0|1|[6-9])?(\\d{3}|\\d{4})?(\\d{4})$";
 								if (patternMatch(Phonepattern, SG_PHONE)) {
 									System.out.println("핸드폰 번호 형식이 아닙니다.(010, 011, 016, 017, 018, 019)");
 									continue;
@@ -120,7 +119,7 @@ public class MBD_Signup {
 									break;
 							}
 
-							//User 클래스에 입력받은 회원정보 저장
+							// User 클래스에 입력받은 회원정보 저장
 							user.setUserId(SG_ID);
 							user.setUserPw(SG_PW);
 							user.setUserName(SG_NAME);
@@ -140,8 +139,8 @@ public class MBD_Signup {
 			catch (SQLException ex) {
 				System.out.println("LOADING 실패");
 				System.out.println("Error: " + ex.getMessage());
-			} 
-			
+			}
+
 			// rs랑 pstmt 닫아주기(연거랑 역순으로)
 			finally {
 				if (rs != null)
@@ -162,7 +161,7 @@ public class MBD_Signup {
 
 	}
 
-	//User클래스에서 입력받은 값을 불러와서 DB에 저장하는 메소드
+	// User클래스에서 입력받은 값을 불러와서 DB에 저장하는 메소드
 	void run() {
 		try {
 
@@ -193,7 +192,7 @@ public class MBD_Signup {
 
 	}
 
-	//paterMatch boolean 메소드
+	// paterMatch boolean 메소드
 	boolean patternMatch(String pattern, String str) {
 		Matcher matcher = Pattern.compile(pattern).matcher(str);
 
@@ -204,14 +203,14 @@ public class MBD_Signup {
 		return false;
 	}
 
-	//paterFind boolean 메소드
+	// paterFind boolean 메소드
 	boolean patternFind(String pattern, String str) {
 		Matcher matcher = Pattern.compile(pattern).matcher(str);
 
 		if (matcher.find()) {
 			return true;
 		}
-		
+
 		return false;
 	}
 }

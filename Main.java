@@ -38,6 +38,7 @@ class App {
 				Login log = new Login();
 				log.run();
 				break;
+				
 			case 2:
 				System.out.println("자격증");
 				break;
