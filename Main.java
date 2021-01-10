@@ -5,8 +5,8 @@ import java.util.*;
 public class Main {
 	public static void main(String[] args) {
 
-		DAO dao = new DAO(); // Connection
-		dao.run();
+		DAO dao = DAO.getInstance(); // Connection
+		dao.run();		
 		App app = new App();
 		app.run();
 	}
@@ -49,6 +49,7 @@ class App {
 				
 			case 4:
 				System.out.println("-----시스템 종료-----");
+				sc.close();
 				return;
 				
 			default:

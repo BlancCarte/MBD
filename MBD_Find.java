@@ -5,37 +5,17 @@ import java.util.*;
 
 public class MBD_Find {
 	Scanner sc = new Scanner(System.in);
-	DAO dao = new DAO();
+	private DAO dao = DAO.getInstance();
 	private static Connection conn;
-	private static PreparedStatement pstmt;
-	int select; // 스위치-케이스문 입력 변수
-	String Find_ID;
-	String Find_Name;
-	String Find_Phone;// ID찾기 입력받은 이름과 ID
+	private static PreparedStatement pstmt;	
+	private String Find_ID;
+	private String Find_Name;
+	private String Find_Phone;// ID찾기 입력받은 이름과 ID
 
-	String DB_ID;
-	String DB_PW;
+	private String DB_ID;
+	private String DB_PW;
 	// DB에서 받아온 ID와 비밀번호	
-
-	void run() {
-		System.out.println("\n 1.아이디 찾기 \n 2.비밀번호 찾기 \n 3.이전메뉴\n");
-		select = sc.nextInt();
-		switch (select) {
-		case 1:
-			findID();
-			return;
-
-		case 2:
-			findPW();
-			return;
-
-		case 3:
-			return;
-		}
-
-	}
-	
-	
+		
 	void findID() {
 		System.out.println("이름 : ");
 		Find_Name = sc.next();
@@ -58,8 +38,7 @@ public class MBD_Find {
 				} else if (DB_ID == null) {
 					System.out.println("이름 또는 전화번호 또는 ID에 해당하는 PW가 없습니다.");
 				}
-
-			}
+			}			
 		} catch (SQLException ex) {
 			System.out.println("LOADING 실패");
 			System.out.println("Error: " + ex.getMessage());

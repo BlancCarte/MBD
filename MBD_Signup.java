@@ -7,18 +7,19 @@ import java.util.regex.*;
 public class MBD_Signup {
 	Scanner sc = new Scanner(System.in);
 	// 받은 회원정보 USER클래스에 저장하기위해 User 객체생성
-	User user = new User();
+	private User user = new User();
 	// DB연결을위한 커넥션, 현재상태 객체 private으로 선언
+	private DAO dao = DAO.getInstance();
 	private static Connection conn;
 	private static PreparedStatement pstmt;
-	String SG_ID;
-	String DB_ID;
-	String SG_PW;
-	String SG_NAME;
-	String SG_BIRTH;
-	String SG_GENDER;
-	String SG_EMAIL;
-	String SG_PHONE;
+	private String SG_ID;
+	private String DB_ID;
+	private String SG_PW;
+	private String SG_NAME;
+	private String SG_BIRTH;
+	private String SG_GENDER;
+	private String SG_EMAIL;
+	private String SG_PHONE;
 
 	// 회원가입 체크 메소드
 	void signUpCheck() {
@@ -166,7 +167,7 @@ public class MBD_Signup {
 		try {
 
 			String sql = "insert into mbd_user values(?,?,?,?,?,?,?)";
-			DAO dao = new DAO();
+			
 			conn = dao.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			String SG_ID = user.getUserId();

@@ -5,8 +5,10 @@ import java.util.*;
 
 public class MBD_Login {
 	Scanner sc = new Scanner(System.in);
+	private DAO dao = DAO.getInstance(); // DAO클래스에서 DB연결을 위한 dao객체 생성
 	private static Connection conn;
 	private static PreparedStatement pstmt;
+	
 
 	//로그인 아이디 체크 메소드
 	void idCheck() {
@@ -16,8 +18,7 @@ public class MBD_Login {
 		ResultSet rs = null;
 
 		try {
-			String sql = "select ID, PW from mbd_user where ID=?";
-			DAO dao = new DAO(); // DAO클래스에서 DB연결을 위한 dao객체 생성
+			String sql = "select ID, PW from mbd_user where ID=?";			
 			conn = dao.getConnection(); // DAO클래스에 있는 getConnection 메소드 호출해서 conn에 저장(conn이 private이기 때문에 메소드로 접근)
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, USER_ID); // select문 ?에 USER_ID를 넣어주고 쿼리보냄
