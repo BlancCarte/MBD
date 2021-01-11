@@ -12,7 +12,7 @@ public class Find {
 		select = sc.nextInt();
 		switch (select) {
 		case 1:
-			fin.findID();
+			fin.findID(); 
 			return;
 
 		case 2:
