@@ -1,97 +1,73 @@
 package project;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 public class MBD_Login {
-   Scanner sc = new Scanner(System.in);
-   private static Connection conn;
-   private static PreparedStatement pstmt;
+	Scanner sc = new Scanner(System.in);
+	private DAO dao = DAO.getInstance();
+	private static Connection conn;
+	private static PreparedStatement pstmt;
 
-   void run() {
-      int select;
-      System.out.println("\n 1.로그인 \n 2.회원가입\n 3.종료\n");
-      select = sc.nextInt();
-      switch (select) {
-      case 1:
-         System.out.println("ID : ");
-         String USER_ID = sc.next();
+	//로그인 아이디 체크 메소드
+	void idCheck() {
+		System.out.println("ID : ");
+		String USER_ID = sc.next();
 
-         ResultSet rs = null;
+		ResultSet rs = null;
 
-         try {
-            String sql = "select ID, PW from mbd_user where ID=?";
-            DAO dao = new DAO();
-            conn = dao.getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, USER_ID);
-            rs = pstmt.executeQuery();
+		try {
+			String sql = "select ID, PW from mbd_user where ID=?";// where -> 조건 
+			conn = dao.getConnection(); // DAO클래스에 있는 getConnection 메소드 호출해서 conn에 저장(conn이 private이기 때문에 메소드로 접근)
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, USER_ID); // select문 ?에 USER_ID를 넣어주고 쿼리보냄
+			rs = pstmt.executeQuery(); // 쿼리받은 값을 rs에 저장
 
-            if (rs.next()) {
-               String DB_ID = rs.getString(1);
-               String DB_PW = rs.getString(2);
+			if (rs.next()) {
+				String DB_ID = rs.getString(1); // ID를 DB_ID에 저장
+				String DB_PW = rs.getString(2); // PW를 DB_PW에 저장
 
-               if (USER_ID.equals(DB_ID)) 
-               {
-                  System.out.println("PW : ");
-                  String USER_PW = sc.next();
-                  
-                  if (USER_PW.equals(DB_PW)) 
-                  {
-                     System.out.println("로그인 성공");
-                  } 
-                  else if (!USER_PW.equals(DB_PW)) 
-                  {
-                     System.out.println("비밀번호가 틀립니다.");
-                  }
-               } 
-               /*
-               else 
-               {
-                  System.out.println("아이디가 틀립니다.");
-               }
-               */
+				if (USER_ID.equals(DB_ID)) // 입력받은 ID랑 DB에 있는 ID랑 같을 때
+				{
+					System.out.println("PW : ");
+					String USER_PW = sc.next();
 
-            } 
-            else 
-            {
-               System.out.println("아이디가 존재하지않습니다.");// 회원가입으로 진행하기
-            }
-         } 
-         catch (SQLException ex) 
-         {
-            System.out.println("LOADING 실패");
-            System.out.println("Error: " + ex.getMessage());
-         } 
-         finally 
-         {
-            if (rs != null)
-               try {
-                  rs.close();
-               } catch (SQLException e) {
-                  e.printStackTrace();
-               }
-            if (pstmt != null)
-               try {
-                  pstmt.close();
-               } catch (SQLException e) {
-                  e.printStackTrace();
-               }
-         }
-         break;
+					// 입력받은 PW랑 DB에 있는 PW랑 같을 때
+					if (USER_PW.equals(DB_PW)) 
+					{
+						System.out.println("로그인 성공");
+					} 
+					// 입력받은 PW랑 DB에 있는 PW랑 같을 때
+					else if (!USER_PW.equals(DB_PW)) {
+						System.out.println("비밀번호가 틀립니다.");
+					}
+				}
 
-      case 2:
-         System.out.println("회원가입");
-         MBD_SignUp sig = new MBD_SignUp();
-         sig.run();
-         break;
+			} 			
+			// 입력받은 ID랑 DB에 있는 ID랑 다를 때
+			else {
+				System.out.println("아이디가 존재하지않습니다. 회원가입을 진행해주세요");
+			}
+		}
+		catch (SQLException ex) {
+			System.out.println("LOADING 실패");
+			System.out.println("Error: " + ex.getMessage());
+		}
 
-      case 3:
-         System.out.println("종료");
-         return;
-      }
-   }
+		// rs랑 pstmt 닫아주기(연거랑 역순으로)
+		finally {
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+	}
 }
